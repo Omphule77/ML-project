@@ -1,24 +1,23 @@
+from flask import Flask,request,render_template
 import pickle
 import os
-from flask import Flask,request,redirect,render_template,jsonify
-import pandas as pd
-import numpy as np
-from sklearn.preprocessing import StandardScaler
 
-application=Flask(__name__)
-app=application
+application = Flask(__name__)
+app = application
 
-## import ridge and scalar model
-ridge_model=pickle.load(open('Model/ridge.pkl','rb'))
-scaler_model=pickle.load(open('Model/scaler.pkl','rb'))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route("/predictdata",methods=['GET','POST'])
+@app.route("/predictdata", methods=['GET','POST'])
 def predict_datapoint():
     if request.method=='POST':
+
+        ridge_model = pickle.load(open(os.path.join(BASE_DIR,'Model','ridge.pkl'),'rb'))
+        scaler_model = pickle.load(open(os.path.join(BASE_DIR,'Model','scaler.pkl'),'rb'))
+
         Temperature = float(request.form.get("Temperature"))
         RH = float(request.form.get("RH"))
         Ws = float(request.form.get("Ws"))
@@ -29,8 +28,8 @@ def predict_datapoint():
         Classes = float(request.form.get("Classes"))
         Region = float(request.form.get("Region"))
 
-        new_data_scaled=scaler_model.transform([[Temperature,RH,Ws,Rain,FFMC,DMC,ISI,Classes,Region]])
-        result=ridge_model.predict(new_data_scaled)
+        new_data_scaled = scaler_model.transform([[Temperature,RH,Ws,Rain,FFMC,DMC,ISI,Classes,Region]])
+        result = ridge_model.predict(new_data_scaled)
 
         return render_template('home.html',result=result[0])
     else:
