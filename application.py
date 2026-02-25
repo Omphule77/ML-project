@@ -5,8 +5,8 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 
-appication=Flask(__name__)
-app=appication
+application=Flask(__name__)
+app=application
 
 ## import ridge and scalar model
 ridge_model=pickle.load(open('Model/ridge.pkl','rb'))
@@ -39,4 +39,4 @@ def predict_datapoint():
 
 if __name__=="__main__":
     port = int(os.environ.get("PORT", 5000))
-    appication.run(host="0.0.0.0", port=port)
+    application.run(host="0.0.0.0", port=port)
