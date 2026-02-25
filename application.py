@@ -1,4 +1,5 @@
 import pickle
+import os
 from flask import Flask,request,redirect,render_template,jsonify
 import pandas as pd
 import numpy as np
@@ -38,4 +39,4 @@ def predict_datapoint():
 
 if __name__=="__main__":
     port = int(os.environ.get("PORT", 5000))
-    application.run(host="0.0.0.0", port=port)
+    appication.run(host="0.0.0.0", port=port)
